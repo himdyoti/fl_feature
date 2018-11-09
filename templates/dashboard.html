@@ -1,0 +1,14 @@
+{% extends "layout.html" %}
+
+{% block content %}
+    <table border="1">
+    <tr><th>Firstname</th><th>Lastname</th><th>Email</th><th>Telephone</th></tr>
+    {% for client in data %}
+    <tr>
+        <td>{{client.firstname}}</td><td>{{client.lastname}}</td><td>{{client.email}}</td><td>{{client.telephone}}</td><td><a href="/feature_request?id={{client.id}}">Edit</a></td>
+    </tr>
+    {% endfor %}
+    </table>
+{% endblock %}
+
+    <div>Woooo! So Great</div>

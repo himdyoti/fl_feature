@@ -1,0 +1,20 @@
+{% extends "layout.html" %}
+    id = Column(Integer, Sequence('id_seq'), primary_key=True)
+    Title = Column(String(50))
+    Description = Column(String(500))
+    client_id = Column(Integer, ForeignKey('client.id'), nullable=False)
+    priority = Column(Integer, nullable=False)
+    target_date = Column(DateTime)
+    product_area = Column(Integer, ForeignKey('product_area.id'))
+{% block content %}
+    <table border="1" cellspacing="2">
+        <tr><th>Title</th><th>Description</th><th>client</th><th>priority</th><th>TargetDate</th><th>ProductArea</th></tr>
+    {% for feature in data %}
+        <tr>
+            <td>{{feature.Title}}</td><td>{{feature.Description}}</td><td>{{feature.firstname}}</td><td>{{feature.priority}}</td><td>{{feature.target_date}}</td><td>{{feature.name}}</td>
+        </tr>
+    {% endfor %}
+    </table>
+{% endblock %}
+
+    <div>Woooo! So Great</div>
