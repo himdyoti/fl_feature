@@ -1,20 +1,47 @@
-{% extends "layout.html" %}
-    id = Column(Integer, Sequence('id_seq'), primary_key=True)
-    Title = Column(String(50))
-    Description = Column(String(500))
-    client_id = Column(Integer, ForeignKey('client.id'), nullable=False)
-    priority = Column(Integer, nullable=False)
-    target_date = Column(DateTime)
-    product_area = Column(Integer, ForeignKey('product_area.id'))
-{% block content %}
-    <table border="1" cellspacing="2">
-        <tr><th>Title</th><th>Description</th><th>client</th><th>priority</th><th>TargetDate</th><th>ProductArea</th></tr>
-    {% for feature in data %}
-        <tr>
-            <td>{{feature.Title}}</td><td>{{feature.Description}}</td><td>{{feature.firstname}}</td><td>{{feature.priority}}</td><td>{{feature.target_date}}</td><td>{{feature.name}}</td>
-        </tr>
-    {% endfor %}
-    </table>
-{% endblock %}
 
-    <div>Woooo! So Great</div>
+<!DOCTYPE html>
+<head>
+<link rel="stylesheet" href="{{url_for('static',filename='css/style.css')}}" />
+</head>
+<body>
+<form action="/feature_request" method="post">
+    <table border="1" cellspacing="2">
+        <thead>
+        <tr><th>Title</th><th>Description</th><th>client</th><th>priority</th>
+            <th>TargetDate</th><th>ProductArea</th></tr>
+        </thead>
+        <tbody data-bind='foreach: lines'>
+         
+            <tr>
+                <td>
+                    <input type="hidden" data-bind="value:ID" />
+                    <input type="text" data-bind="value: Title" />
+                </td>
+                <td><input type="text" data-bind="value:Description" /></td>
+                <td>
+                    <input type="text" data-bind="value:firstname" disabled />
+                    <input type="hidden" data-bind="value:client_id"/>
+                </td>
+                <td><input type="text" data-bind="value:priority" /></td>
+                <td><input type="data" data-bind="value:target_date" /></td>
+                <td><input type="text" data-bind="value:area_name"/></td>
+            </tr>
+        
+        </tbody>
+        <tfoot>
+            <tr><td><div data-bind='click: addLine'>Add Feature</div></td></tr>
+        </tfoot>
+    </table>
+</form>
+
+
+<script src="{{url_for('static',filename='js/jquery3.3.1.js')}}"></script>
+<script src="{{url_for('static',filename='js/knockout3.5.0rc2.js')}}"></script>
+<script src="{{url_for('static',filename='js/main.js')}}"></script>
+</body>
+<script type="text/javascript">
+data = {{ data|tojson|safe }} ;
+apply_binding(data);
+</script>
+
+

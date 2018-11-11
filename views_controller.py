@@ -11,7 +11,21 @@ class controllerView:
 
     def get_feature_request(self, get=False, post=False, **kargs):       
         client_id = kargs['data']
-        return self.db.get_feature_request(client_id)
+        print(client_id)
+        data = self.db.get_feature_request(client_id)
+        resultset = [rs._asdict() for rs in data]
+        return resultset
+
+        
+
+    def get_product_areas(self):
+        data = self.db.get_product_areas()
+        resultset = [rs._asdict() for rs in data]
+        return resultset
+
+    def edit_feature_request(self, get=False, post=False, **kargs):       
+        data = kargs['data']
+        return self.db.edit_feature_request(data)
 
 
     def get_clients(self):

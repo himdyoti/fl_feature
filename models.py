@@ -1,20 +1,21 @@
-from sqlalchemy import create_engine, ForeignKey, Column, Integer, Boolean, String, Sequence, DateTime
+from sqlalchemy import create_engine, ForeignKey, UniqueConstraint, Column, Integer, Boolean, String, Sequence, DateTime
 from sqlalchemy.ext.declarative import declarative_base
 Base = declarative_base()
 
 class FeatureRequest(Base):
     __tablename__ = 'feature_request'
-    id = Column(Integer, Sequence('id_seq'), primary_key=True)
+    ID = Column(Integer, Sequence('id_seq'), primary_key=True)
     Title = Column(String(50))
     Description = Column(String(500))
-    client_id = Column(Integer, ForeignKey('client.id'), nullable=False)
+    client_id = Column(Integer, ForeignKey('client.ID'), nullable=False)
     priority = Column(Integer, nullable=False)
     target_date = Column(DateTime)
-    product_area = Column(Integer, ForeignKey('product_area.id'))
+    product_area_id = Column(Integer, ForeignKey('product_area.ID'))
+    UniqueConstraint('client_id', 'priority', name='ft_requ_1')
 
 class client(Base):
     __tablename__ = 'client'
-    id = Column(Integer, Sequence('id_seq'), primary_key=True)
+    ID = Column(Integer, Sequence('id_seq'), primary_key=True)
     username = Column(String(20), nullable=False, unique=True)
     password = Column(String(30), nullable=False)
     firstname = Column(String(20))
@@ -28,8 +29,8 @@ class client(Base):
 
 class ProductArea(Base):
     __tablename__ = 'product_area'
-    id = Column(Integer, Sequence('id_seq'), primary_key=True)
-    name = Column(String(30), nullable=False)
+    ID = Column(Integer, Sequence('id_seq'), primary_key=True)
+    area_name = Column(String(30), nullable=False)
 
 
 

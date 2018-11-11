@@ -18,10 +18,14 @@ class Database:
         pass
 
     def get_feature_request(self,id):
-        query = self.session.query(FeatureRequest.Title, FeatureRequest.Description, FeatureRequest.priority, FeatureRequest.target_date, client.firstname, ProductArea.name)
-        query = query.join(client).join(ProductArea)
+        query = self.session.query(FeatureRequest.ID, FeatureRequest.Title, FeatureRequest.Description,
+            FeatureRequest.priority, FeatureRequest.client_id, FeatureRequest.target_date,
+            client.firstname, ProductArea.area_name).join(client).join(ProductArea)\
+            .filter(FeatureRequest.client_id==id).order_by(FeatureRequest.priority.asc())
         return query.all()
-        #return self.session.query(FeatureRequest).filter(FeatureRequest.client_id == id).all()
+
+    def get_product_areas(self):
+        return self.session.query(ProductArea.ID, ProductArea.area_name).all()    
 
     def get_clients(self,id=False):
         if id:

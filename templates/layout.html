@@ -7,24 +7,12 @@
 <link rel="stylesheet" href="{{url_for('static',filename='css/style.css')}}"></link>
 <script src="{{url_for('static',filename='js/jquery3.3.1.js')}}"></script>
 <script src="{{url_for('static',filename='js/knockout3.5.0rc2.js')}}"></script>
-<script src="{{url_for('static',filename='js/main.js')}}"></script>
-
-    {% if title %}
-    <title>{{ title }}</title>
-    {% else %}
-    <title>Add Feature</title>
-    {% endif %}
 
 </head>
+
 <body>
-<div data-bind="html :mdiv">Woooo! So Great</div>
 {% block content %}{% endblock %}
 
-
-<script type="text/javascript">
-    var vm={mdiv:ko.observable()};
-    vm.mdiv="I just used knockout js";
-ko.applyBindings(vm);
-</script>
 </body>
+
 </html>
