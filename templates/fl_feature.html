@@ -1,6 +1,9 @@
 
 <!DOCTYPE html>
 <head>
+<script src="{{url_for('static',filename='js/jquery3.3.1.js')}}"></script>
+<script src="{{url_for('static',filename='js/kounminified.js')}}"></script>
+<meta charset="UTF-8">
 <link rel="stylesheet" href="{{url_for('static',filename='css/style.css')}}" />
 </head>
 <body>
@@ -29,14 +32,15 @@
         
         </tbody>
         <tfoot>
-            <tr><td><div data-bind='click: addLine'>Add Feature</div></td></tr>
+            <tr>
+                <td><div data-bind='click: addLine'>Add Feature</div></td>
+
+            </tr>
         </tfoot>
     </table>
 </form>
 
 
-<script src="{{url_for('static',filename='js/jquery3.3.1.js')}}"></script>
-<script src="{{url_for('static',filename='js/knockout3.5.0rc2.js')}}"></script>
 <script src="{{url_for('static',filename='js/main.js')}}"></script>
 </body>
 <script type="text/javascript">
