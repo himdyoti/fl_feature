@@ -20,7 +20,7 @@ class Database:
     def get_feature_request(self,id):
         query = self.session.query(FeatureRequest.ID, FeatureRequest.Title, FeatureRequest.Description,
             FeatureRequest.priority, FeatureRequest.client_id, FeatureRequest.target_date,
-            client.firstname, ProductArea.area_name).join(client).join(ProductArea)\
+            client.firstname, ProductArea.area_name).outerjoin(client).outerjoin(ProductArea)\
             .filter(FeatureRequest.client_id==id).order_by(FeatureRequest.priority.asc())
         return query.all()
 
