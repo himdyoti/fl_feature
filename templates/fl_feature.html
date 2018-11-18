@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <head>
 <script src="{{url_for('static',filename='js/jquery3.3.1.js')}}"></script>
-<script src="{{url_for('static',filename='js/kounminified.js')}}"></script>
+<script src="{{url_for('static',filename='js/knockout3.5.0rc2.js')}}"></script>
 <meta charset="UTF-8">
 <link rel="stylesheet" href="{{url_for('static',filename='css/style.css')}}" />
 </head>
@@ -10,7 +10,7 @@
 <form action="/feature_request" method="post">
     <table border="1" cellspacing="2">
         <thead>
-        <tr><th>Title</th><th>Description</th><th>client</th><th>priority</th>
+        <tr><th>Title</th><th>Description</th><th>Client</th><th>Priority</th>
             <th>TargetDate</th><th>ProductArea</th></tr>
         </thead>
         <tbody data-bind='foreach: lines'>
@@ -21,12 +21,15 @@
                     <input type="text" data-bind="value: Title" />
                 </td>
                 <td><input type="text" data-bind="value:Description" /></td>
-                <td>
-                    <input type="text" data-bind="value:firstname" disabled />
+                <td class="priority" nowrap>
+                    <input type="text" size="6" data-bind="value:firstname" placeholder="<name>optional" disabled />
                     <input type="hidden" data-bind="value:client_id"/>
                 </td>
-                <td><input type="text" data-bind="value:priority" /></td>
-                <td><input type="data" data-bind="value:target_date" /></td>
+                <td>
+                    <input type="text" size="1" data-bind="value:priority" />
+                    <select class="pr_opt" data-bind="options:$root.selectbox,optionsCaption: '...'"  />
+                </td>
+                <td><input type="datetime-local" data-bind="value:target_date" /></td>
                 <td><input type="text" data-bind="value:area_name"/></td>
             </tr>
         
@@ -34,7 +37,7 @@
         <tfoot>
             <tr>
                 <td><div data-bind='click: addLine'>Add Feature</div></td>
-
+                <td><div data-bind='click: save'>Submit</div></td>
             </tr>
         </tfoot>
     </table>
@@ -45,7 +48,8 @@
 </body>
 <script type="text/javascript">
 data = {{ data|tojson|safe }} ;
-apply_binding(data);
+client_id = {{request.args.get('id')}} ;
+apply_binding(data, client_id);
 </script>
 
 

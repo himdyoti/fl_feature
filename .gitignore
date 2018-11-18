@@ -1,3 +1,5 @@
 .idea
 **__pycache__/
 /config.cfg
+
+__pycache__/

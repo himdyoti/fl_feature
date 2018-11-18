@@ -22,19 +22,22 @@ def get_feature_request():
     client_id = request.args.get('id',False)
     if client_id:
         features = controllerV.get_feature_request(data=client_id)
-        print(features)
-    #datako=[jsonify(ftr._asdict()) for ftr in features]
     return render_template("fl_feature.html", data=features)
+
+@app.route('/get_product_areas', methods=['GET', 'POST'])
+def get_product_areas():
+    data = controllerV.get_product_areas()
+    return jsonify(data); 
 
 
 @app.route('/add_feature_request', methods=['GET', 'POST'])
-def add_feature_request():
+def add_feature():
     if request.method == 'POST':
-        controllerV.add_feature_request(post=True, data=request.form)
+        controllerV.add_feature_request(post=True, data=request.ftrs_data)
 
 
 @app.route('/edit_feature_request', methods=['GET', 'POST'])
-def edit_feature_request():
+def edit_feature():
     if request.method == 'POST':
-        controllerV.edit_feature_request(post=True, data=request.form)
+        controllerV.edit_feature_request(post=True, data=request.ftrs_data)
 

@@ -1,98 +1,126 @@
 var VM = {};
-var FeatureOne = function(data){
+var FeatureOne = function(){
     var self = this;
-    self.ID = ko.observable(data.ID);
-    self.Title = ko.observable(data.Title);
-    self.client_id = ko.observable(data.client_id);
-    self.firstname = ko.observable(data.firstname);
-    self.Description = ko.observable(data.Description);
-    self.priority = ko.observable(data.priority);
-    self.target_date = ko.observable(data.target_date);
-    self.area_name = ko.observable(data.area_name);
-    self.oldval = false;
-    self.priority.subscribe(function(preval){
-        self.oldval = preval;
-    },null,'beforeChange');
+    self.ID = ko.observable();
+    self.Title = ko.observable();
+    self.client_id = ko.observable();
+    self.firstname = ko.observable();
+    self.Description = ko.observable();
+    self.priority = ko.observable();
+    self.target_date = ko.observable();
+    self.area_name = ko.observable();
 
-    self.priority.subscribe(function(newval){
-        sort_priority(newval,self.oldval);
-    });
 }
 
 
 
-var viewModel = function(data){ 
+var viewModel = function(data, cl_id){ 
     var self = this;
-    var tempobj= {ID:'', Description: "spelling and grammer", Title:"spelling", client_id: 18, firstname:"abc", area_name:"grammer", priority: 1,target_date: "Thu, 29 Nov 2018 00:00:00 GMT" };
-
     self.lines = ko.observableArray();
-    $.each(data,function(inx,val){
-        self.lines.push(new FeatureOne(val));
+    self.sort1 = function(){
+        self.lines.sort(function (left, right) { return left.priority() == right.priority() ? 0 : (left.priority() < right.priority() ? -1 : 1) }) ;
+    };
+    self.selectbox = ko.observableArray();
+
+    $.each(data,function(inx,v){
+        obj = new FeatureOne();
+        obj.ID(v.ID); obj.Title(v.Title); obj.client_id(v.client_id);
+        obj.firstname(v.firstname);obj.Description(v.Description);
+        obj.priority(v.priority);obj.target_date(v.target_date); obj.area_name(v.area_name);
+        self.lines.push(obj);
+        self.selectbox.push(obj.priority());
     });
+    self.sort1();
 
     $.ajax({ url:'/get_product_areas', method:'get', dataType:'json',success:function(data){
         console.log(data);
     }});
 
-    self.addLine = function(){self.lines.push(new FeatureOne(tempobj))};
-    self.removeLine = function(line) { self.lines.remove(line) };
+    self.addLine = function(){
+        ftr_one = new FeatureOne();
+        ftr_one.client_id(cl_id);
+        len1 = self.lines().length ; console.log(len1);
+        ftr_one.priority(len1 + 1);
+        self.lines.push(ftr_one);
+        self.selectbox.push(len1 + 1);
+    };
+    self.removeLine = function(line) {
+        // selectbox remove item by priority 
+        self.lines.remove(line)
+        //sort lines 
+    };
     self.save = function(){
         var existing = [], new_added = [];
-        $.each(self.lines, function(indx,line){
+        $.each(self.lines(), function(indx,line){ console.log(line);
             feature_one = {'ID':line.ID(),'Title':line.Title(),'Description':line.Description(), 'priority':line.priority(), 'target_date':line.target_date(), 'area_name':line.area_name()};
-            if(line.id()){
-                exising.push(feature_one);
+            if(line.ID()){
+                existing.push(feature_one);
             }else{
                 new_added.push(feature_one);
             }
 
         });
+        
         var urls=['edit_feature','add_feature'];
         $(urls).each(function(indx,url){
-            data = url == 'add_feature' ? new_added : existing;
-            if(data.length)
+            post_data = url == 'add_feature' ? new_added : existing;
+            if(post_data.length)
              $.ajax({
                 url: '/' + url,
                 method: 'post',
-                data: {'data':existing},
+                async:false,
+                data: {'ftrs_data':post_data},
                 success: function(){console.log("updated")}
             });            
 
         });
+        
 
 
     };
 
 };
 
-function apply_binding(data){
-    VM = new viewModel(data)
+function apply_binding(data,client_id){
+    VM = new viewModel(data,client_id);
     ko.applyBindings(VM);
 }
 
-function sort_priority(n,o){
-    console.log(n,o);
-    if(Math.abs(n-o) == 1){
-    for (i=0;i<VM.lines().length;i++){
-        if(VM.lines()[i].priority() == n && VM.lines()[i].oldval != o )
-             VM.lines()[i].priority(o);
-         else
-            VM.lines()[i].oldval = false;
-    }
-    }
-//pull start from prio(n) downward upto prio(o) when prion(n) >> prio(o) change elem will sit to prio(n)
-//or lift upward prio(n) upto prio(o) when prio(n) << prio(o), changed elem will sit at prio(n)
-//priority no decreased means ranking improved
 
-    else if(Math.abs(n-o) > 1){ 
-     for (i=0;i<VM.lines().length;i++){
-        if(VM.lines()[i].priority() == n && VM.lines()[i].oldval != o )
-             VM.lines()[i].priority(o);
-         else
-            VM.lines()[i].oldval = false;       
+$('tbody').on('change','.pr_opt',function(){
+    tobe = parseInt(this.value); //n
+    if(isNaN(tobe))
+        return;
+    curr = parseInt($(this).prev().val()); //p
+    console.log(tobe, curr);
+    ftrs = VM.lines;
+    celem = ftrs()[curr -1];
+    celem.priority(tobe);
+    if(Math.abs(tobe-curr) ==1){
+       ftrs()[tobe -1].priority(curr) ;
     }
+    if ((curr-tobe)>1){ //curr=5, tobe=2
+        while(tobe<curr){ //2 < 5
+            pr = ftrs()[tobe-1].priority();
+            ftrs()[tobe-1].priority(pr+1);
+            tobe = tobe +1; 
+        }
+        ftrs.remove(ftrs()[curr-1]);
+        ftrs.splice(tobe -1,0,celem);
+
     }
+    if((tobe - curr) > 1){ cpos = curr;//curr = 2, tobe=5
+        while(tobe > curr){ console.log(ftrs()[curr]);
+            pr = ftrs()[curr].priority();
+            ftrs()[curr].priority(pr-1);
+            curr = curr +1;           
+        }
+        ftrs.remove(ftrs()[cpos-1]);
+        ftrs.splice(tobe -1,0,celem);
+    }
+    VM.sort1();
+});
 
-    VM.lines = VM.lines.sort(function (left, right) { return left.priority() < right.priority() ? -1 : 1 })
 
-}
+
+
