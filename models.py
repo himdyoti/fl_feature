@@ -1,4 +1,5 @@
-from sqlalchemy import create_engine, ForeignKey, UniqueConstraint, Column, Integer, Boolean, String, Sequence, DateTime
+from datetime import datetime
+from sqlalchemy import create_engine, ForeignKey, UniqueConstraint, Column, Integer, Boolean, String, Sequence, DateTime, Date
 from sqlalchemy.ext.declarative import declarative_base
 Base = declarative_base()
 
@@ -9,7 +10,7 @@ class FeatureRequest(Base):
     Description = Column(String(500))
     client_id = Column(Integer, ForeignKey('client.ID'), nullable=False)
     priority = Column(Integer, nullable=False)
-    target_date = Column(DateTime)
+    target_date = Column(Date)
     product_area_id = Column(Integer, ForeignKey('product_area.ID'))
     UniqueConstraint('client_id', 'priority', name='ft_requ_1')
 
@@ -26,6 +27,7 @@ class client(Base):
     state = String(20)
     country = String(20)
     zipcode = String(20)
+    date_added = Column(DateTime, default=datetime.utcnow())
 
 class ProductArea(Base):
     __tablename__ = 'product_area'
@@ -48,8 +50,10 @@ if __name__=="__main__":
 
     for key, val in enumerate(db_urls,start=1):
         print('{}.  {}'.format(key,re.split('://|\+',val)[0]), end='\n')
+    
     db_type = int(input("Choose Your Database Type: "))
     assert db_type in range(1,len(db_urls) + 1), 'choose from {}'.format(','.join(range(1,len(db_urls) + 1)))
+    
     user = input('Username: ')
     passwd = getpass.getpass('Enter Password: ')
     print("Enter hostname like localhost, 127.0.0.1 or IP address", end="\n")

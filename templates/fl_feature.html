@@ -5,13 +5,27 @@
 <script src="{{url_for('static',filename='js/knockout3.5.0rc2.js')}}"></script>
 <meta charset="UTF-8">
 <link rel="stylesheet" href="{{url_for('static',filename='css/style.css')}}" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
+<table id="tbl_header" style="width:100%;">
+<tr>
+    <td align="left">
+        <span class="cl_header_name">{{client_info.firstname}} {{client_info.lastname}}</span> 
+        <span class="cl_header_email">{{client_info.email}}</span>
+        <span class="cl_header_address">{{client_info.address}}</span>
+    </td>
+    <th align="left">Client's Features List</th>
+    <th align="left">Date</th>
+</tr>
+
+</table>
+
 <form action="/feature_request" method="post">
-    <table border="1" cellspacing="2">
+    <table id="feature_tbl">
         <thead>
-        <tr><th>Title</th><th>Description</th><th>Client</th><th>Priority</th>
-            <th>TargetDate</th><th>ProductArea</th></tr>
+        <tr><th>Title</th><th>Description</th><th>Priority</th>
+            <th>TargetDate</th><th>ProductArea</th><th></th></tr>
         </thead>
         <tbody data-bind='foreach: lines'>
          
@@ -19,25 +33,26 @@
                 <td>
                     <input type="hidden" data-bind="value:ID" />
                     <input type="text" data-bind="value: Title" />
+                    <input type="hidden" data-bind="value:client_id"/>
+                    <input type="hidden" data-bind="value:product_area_id"/>
                 </td>
                 <td><input type="text" data-bind="value:Description" /></td>
                 <td class="priority" nowrap>
-                    <input type="text" size="6" data-bind="value:firstname" placeholder="<name>optional" disabled />
-                    <input type="hidden" data-bind="value:client_id"/>
-                </td>
-                <td>
                     <input type="text" size="1" data-bind="value:priority" />
                     <select class="pr_opt" data-bind="options:$root.selectbox,optionsCaption: '...'"  />
                 </td>
-                <td><input type="datetime-local" data-bind="value:target_date" /></td>
+                <td><input type="date" data-bind="value:target_date" /></td>
                 <td><input type="text" data-bind="value:area_name"/></td>
+                <td>
+                    <i class="fa fa-trash-o" style="font-size:25px;color:red" data-bind='click: $root.removeLine'></i>
+                </td>
             </tr>
         
         </tbody>
         <tfoot>
             <tr>
-                <td><div data-bind='click: addLine'>Add Feature</div></td>
-                <td><div data-bind='click: save'>Submit</div></td>
+                <td><div class="btn" data-bind='click: addLine'>Add Feature</div></td>
+                <td><div class="btn" data-bind='click: save'>Submit</div></td>
             </tr>
         </tfoot>
     </table>
@@ -47,9 +62,9 @@
 <script src="{{url_for('static',filename='js/main.js')}}"></script>
 </body>
 <script type="text/javascript">
-data = {{ data|tojson|safe }} ;
-client_id = {{request.args.get('id')}} ;
-apply_binding(data, client_id);
+    data = {{ data|tojson|safe }}; 
+    client_id = '{{ client_info.ID }}';
+    apply_binding(data, client_id);
 </script>
 
 
