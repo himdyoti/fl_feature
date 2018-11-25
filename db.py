@@ -15,16 +15,33 @@ class Database:
     def _init_setup(self):
         Base.metadata.create_all(self.engine)
 
-    def add_feature_request(data):
+    def add_feature_request(self,data):
         return {'a':'success','b':'data'}
 
-    def update_feature_request(features):
+    def update_feature_request(self,features):
+        print(features)
+        print(type(features))
+        features = eval(features)
         for data in features:
-            self.session.merge(FeatureRequest(ID=data.ID,Title=data.Title,
-                client_id=data.client_id, Description=data.Description,
-                priority=data.priority, target_date=data.target_date,
-                product_area_id=data.product_area_id))
-        self.session.commit()
+            print("from db.......")
+            if data.get('ID',False):
+                self.session.merge(FeatureRequest(ID=data['ID'], Title=data['Title'],
+                    client_id=data['client_id'], Description=data['Description'],
+                    priority=data['priority'], target_date=data['target_date'],
+                    product_area_id=data['product_area_id']))
+            else:
+                self.session.merge(FeatureRequest(Title=data['Title'],
+                    client_id=data['client_id'], Description=data['Description'],
+                    priority=data['priority'], target_date=data['target_date'],
+                    product_area_id=data['product_area_id']))
+
+        try:
+            self.session.commit()
+            return True
+        except:
+            self.session.rollback()
+            self.session.flush()
+            return false
 
 
 

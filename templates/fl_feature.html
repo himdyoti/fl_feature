@@ -3,6 +3,7 @@
 <head>
 <script src="{{url_for('static',filename='js/jquery3.3.1.js')}}"></script>
 <script src="{{url_for('static',filename='js/knockout3.5.0rc2.js')}}"></script>
+<script src="{{url_for('static',filename='js/moments.js')}}"></script>
 <meta charset="UTF-8">
 <link rel="stylesheet" href="{{url_for('static',filename='css/style.css')}}" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -32,17 +33,18 @@
             <tr>
                 <td>
                     <input type="hidden" data-bind="value:ID" />
-                    <input type="text" data-bind="value: Title" />
+                    <input type="text" class="title" data-bind="value: Title" />
                     <input type="hidden" data-bind="value:client_id"/>
                     <input type="hidden" data-bind="value:product_area_id"/>
+                    <input type="hidden" data-bind="value:ID"/>
                 </td>
-                <td><input type="text" data-bind="value:Description" /></td>
+                <td><input type="text" class="desc" data-bind="value:Description" /></td>
                 <td class="priority" nowrap>
                     <input type="text" size="1" data-bind="value:priority" />
                     <select class="pr_opt" data-bind="options:$root.selectbox,optionsCaption: '...'"  />
                 </td>
                 <td><input type="date" data-bind="value:target_date" /></td>
-                <td><input type="text" data-bind="value:area_name"/></td>
+                <td><select name="parea" data-bind="options:$root.select_pa,optionsText: 'area_name',optionsValue:'ID',value:product_area_id,optionsCaption: '...'"></select></td>
                 <td>
                     <i class="fa fa-trash-o" style="font-size:25px;color:red" data-bind='click: $root.removeLine'></i>
                 </td>

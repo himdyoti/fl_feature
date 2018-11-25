@@ -8,6 +8,11 @@ span.cl_header_address{display:block;font-size: 11px;font-style: italic;}
     width: 100%;
 }
 
+#feature_tbl input.title, input.desc{
+    width: 95%;
+}
+
+
 #feature_tbl td, #feature_tbl th {
     border: 1px solid #ddd;
     padding: 6px;
