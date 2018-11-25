@@ -16,8 +16,8 @@
         <span class="cl_header_email">{{client_info.email}}</span>
         <span class="cl_header_address">{{client_info.address}}</span>
     </td>
-    <th align="left">Client's Features List</th>
-    <th align="left">Date</th>
+    <th align="center">{{client_info.firstname}}'s Features List</th>
+    <td align="right" id="to_day"></td>
 </tr>
 
 </table>
@@ -44,7 +44,7 @@
                     <select class="pr_opt" data-bind="options:$root.selectbox,optionsCaption: '...'"  />
                 </td>
                 <td><input type="date" data-bind="value:target_date" /></td>
-                <td><select name="parea" data-bind="options:$root.select_pa,optionsText: 'area_name',optionsValue:'ID',value:product_area_id,optionsCaption: '...'"></select></td>
+                <td><select name="parea" data-bind="options:pa_slct,optionsText: 'area_name',optionsValue:'ID',value:product_area_id,optionsCaption: '...'"></select></td>
                 <td>
                     <i class="fa fa-trash-o" style="font-size:25px;color:red" data-bind='click: $root.removeLine'></i>
                 </td>
@@ -67,6 +67,13 @@
     data = {{ data|tojson|safe }}; 
     client_id = '{{ client_info.ID }}';
     apply_binding(data, client_id);
+</script>
+
+<script type="text/javascript">
+    to_day = new Date();
+    tt= to_day.toString().replace(/^(.*?[0-9]{4}).*$/g,"$1");
+    console.log(tt);
+    $("#to_day").text(tt);
 </script>
 
 

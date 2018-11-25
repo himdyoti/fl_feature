@@ -1,6 +1,7 @@
 span.cl_header_name{display:block;font-size: 13px;}
 span.cl_header_email{display:block;font-size: 11px;font-style: italic;}
 span.cl_header_address{display:block;font-size: 11px;font-style: italic;}
+td#to_day{font-size: 11px;font-style: italic;}
 
 #feature_tbl {
     font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;

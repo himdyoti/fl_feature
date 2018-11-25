@@ -5,7 +5,9 @@
     <tr><th>Firstname</th><th>Lastname</th><th>Email</th><th>Telephone</th></tr>
     {% for client in data %}
     <tr>
-        <td>{{client.firstname}}</td><td>{{client.lastname}}</td><td>{{client.email}}</td><td>{{client.telephone}}</td><td><a href="/get_feature_request?cid={{client.ID}}">Edit</a></td>
+        <td>{{client.firstname}}</td><td>{{client.lastname}}</td>
+        <td>{{client.email}}</td><td>{{client.telephone}}</td>
+        <td><a href="/get_feature_request?cid={{client.ID}}">Edit</a></td>
     </tr>
     {% endfor %}
     </table>

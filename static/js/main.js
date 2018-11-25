@@ -9,6 +9,7 @@ var FeatureOne = function(){
     self.target_date = ko.observable();
     self.area_name = ko.observable();
     self.product_area_id = ko.observable();
+    self .pa_slct = ko.observableArray();
     self.product_area_id.subscribe(function(nv){
         if(nv && !isNaN(parseInt(nv))){
             self.product_area_id(nv);
@@ -28,9 +29,14 @@ var viewModel = function(data, client_id){
     self.sort1 = function(){
         self.lines.sort(function (left, right) { return left.priority() == right.priority() ? 0 : (left.priority() < right.priority() ? -1 : 1) }) ;
     };
+    product_areas = [];
+    $.ajax({ url:'/get_product_areas', method:'get', async:false, dataType:'json',success:function(data){
+        $.each(data, function(inx,v){console.log(v);
+           product_areas.push(v);
+        });
+    }});
 
     self.selectbox = ko.observableArray();
-    self.select_pa = ko.observableArray();
 
     if(data.length >0){ 
         $.each(data,function(inx,v){ 
@@ -43,7 +49,8 @@ var viewModel = function(data, client_id){
             obj.priority(v.priority);
             obj.target_date(date_compute(v.target_date));
             obj.area_name(v.area_name);
-            obj.product_area_id(v.product_area_id); console.log(obj.target_date());
+            obj.product_area_id(v.product_area_id);
+            obj.pa_slct(product_areas);
             self.lines.push(obj);
             self.selectbox.push(obj.priority());
         });
@@ -61,6 +68,7 @@ var viewModel = function(data, client_id){
         ftr_one.client_id(client_id);
         len1 = self.lines().length ;
         ftr_one.priority(len1 + 1);
+        ftr_one.pa_slct(product_areas);
         self.lines.push(ftr_one);
         self.selectbox.push(len1 + 1);
     };
