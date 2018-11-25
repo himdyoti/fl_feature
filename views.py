@@ -45,9 +45,13 @@ def edit_feature():
 
 @app.route('/update_feature_request', methods=['GET', 'POST'])
 def update_feature():
+    
     if request.method == 'POST':
-        print(request.json)
-        controllerV.update_feature_request(features=request.json['all_features'])
+        #request.data = request.data.decode('utf-8').encode('utf-8')
+        data = request.get_json()
+        status = controllerV.update_feature_request(features=data)
+        return status
+    
 
 @app.route('/remove_feature_request', methods=['GET', 'POST'])
 def remove_feature():
