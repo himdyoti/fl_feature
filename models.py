@@ -27,7 +27,7 @@ class client(Base):
     state = String(20)
     country = String(20)
     zipcode = String(20)
-    date_added = Column(DateTime, default=datetime.utcnow())
+    date_added = Column(DateTime, default=datetime.utcnow)
 
 class ProductArea(Base):
     __tablename__ = 'product_area'

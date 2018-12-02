@@ -1,15 +1,87 @@
 {% extends "layout.html" %}
 
+{% block head %}
+{{ super() }}
+<script src="{{url_for('static',filename='js/clients.js')}}"></script>
+{% endblock%}
+
 {% block content %}
-    <table border="1">
-    <tr><th>Firstname</th><th>Lastname</th><th>Email</th><th>Telephone</th></tr>
-    {% for client in data %}
-    <tr>
-        <td>{{client.firstname}}</td><td>{{client.lastname}}</td>
-        <td>{{client.email}}</td><td>{{client.telephone}}</td>
-        <td><a href="/get_feature_request?cid={{client.ID}}">Edit</a></td>
-    </tr>
-    {% endfor %}
-    </table>
+
+<table border="1" id="all_clients">
+<thead>
+<tr><th>Firstname</th><th>Lastname</th><th>Email</th><th>Telephone</th><th>Address</th><th></th></tr>
+</thead>
+<tbody  data-bind = "foreach : clients">
+<tr>
+    <td data-bind="html:firstname"></td><td data-bind="html:lastname"></td>
+    <td data-bind="html:email"></td>
+    <td data-bind="html:phone"></td>
+    <td data-bind="html:address"></td>
+    <td>
+        <a data-bind="click:$root.getclient">Edit</a>
+    </td>
+    <td>
+        <a data-bind="attr:{href:url_ftr}">Features</a>
+    </td>
+</tr>
+</tbody>
+</table>
+<div class="btn_groups"><div class="btn" id="create_user">Create User</div></div>
+
+<div id="client_form" title="Add new Client" style="display:none;">
+    
+  <form id="form_popup">
+    <span class="close" data-bind="click:$root.close_mod">&times;</span>
+        <table data-bind="with:slctd_client">
+        <thead>
+        <tr>
+            <td><input type="hidden" data-bind="value:client_id" /></td>
+            <td></td>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+        <td>FirstName</td>
+        <td><input type="text" name="firstname" data-bind="value:firstname" /></td>
+        </tr>
+        <tr>
+        <td>LastName</td>
+        <td><input type="text" name="lastname" data-bind="value:lastname" /></td>
+        </tr>
+        <tr>
+        <td>Email</td>
+        <td><input type="text" name="email" data-bind="value:email" value=""></td>
+        </tr>
+        <tr>
+        <td>Password</td>
+        <td><input type="password" name="password" value=""></td>
+        </tr>
+        <tr>
+        <td>Phone</td>
+        <td><input type="text" name="phone" data-bind="value:phone" /></td>
+        </tr>
+        <tr>
+        <td>Address</td>
+        <td><textarea cols="25" rows="3" name="address" data-bind="value:address"></textarea></td>
+        </tr>
+        <tr><td></td><td><input type="submit" /></td></tr>
+        </tbody>
+        </table>
+  </form>
+</div>
+
+<script type="text/javascript">
+$( "#create_user" ).on( "click", function() {
+    $("#client_form").show();
+});
+</script>
+
+<script type="text/javascript">
+    data = {{ data|tojson|safe }}; 
+    apply_client_binding(data);
+</script>
+
 {% endblock %}
+
+
 

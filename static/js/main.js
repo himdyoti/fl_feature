@@ -57,11 +57,6 @@ var viewModel = function(data, client_id){
     }
     self.sort1();
 
-    $.ajax({ url:'/get_product_areas', method:'get', dataType:'json',success:function(data){
-        $.each(data, function(inx,v){console.log(v);
-           self.select_pa.push(v);
-        });
-    }});
 
     self.addLine = function(){
         ftr_one = new FeatureOne();

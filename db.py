@@ -56,17 +56,13 @@ class Database:
         return self.session.query(ProductArea.ID, ProductArea.area_name).all()    
 
     def get_clients(self,clid=False):
+        sqlQ = self.session.query(client)
         if clid:
-            return self.session.query(client).filter(client.ID == clid).one()
+            return sqlQ.filter(client.ID == clid).one()
         else:
-            return self.session.query(client).order_by(client.firstname.asc()).all()
+            return sqlQ.order_by(client.firstname.asc()).all()
 
     def add_clients(self):
-        objects = [
-            client(username="abc", password="abc", firstname="abc", lastname="cba",email="abc@cba", telephone=12345, address=' ',state=' ',country=' ',zipcode=' ', date_added=datetime.utcnow()),
-            client(username="bcd", password="bcd", firstname="bcd", lastname="dcb",email="bcd@dcb", telephone=12346, address=' ',state=' ',country=' ',zipcode=' ', date_added=datetime.utcnow()),
-            client(username="cde", password="cde", firstname="cde", lastname="cde",email="cde@cde", telephone=12347, address=' ',state='',country=' ',zipcode=' ', date_added=datetime.utcnow())
-        ]
         self.session.add_all(objects)
         self.session.commit()
 

@@ -3,7 +3,10 @@ span.cl_header_email{display:block;font-size: 11px;font-style: italic;}
 span.cl_header_address{display:block;font-size: 11px;font-style: italic;}
 td#to_day{font-size: 11px;font-style: italic;}
 
-#feature_tbl {
+#tbl_header{width:100%; table-layout: fixed;}
+#tbl_header td, #tbl_header th{ padding:15px; }
+
+#feature_tbl, #all_clients {
     font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
     border-collapse: collapse;
     width: 100%;
@@ -14,23 +17,23 @@ td#to_day{font-size: 11px;font-style: italic;}
 }
 
 
-#feature_tbl td, #feature_tbl th {
+#feature_tbl td, #feature_tbl th, #all_clients td, #all_clients th {
     border: 1px solid #ddd;
     padding: 6px;
 }
 
-#feature_tbl tbody tr:nth-child(even){background-color: #f2f2f2;}
+#feature_tbl tbody tr:nth-child(even), #all_clients tbody tr:nth-child(even)
+{background-color: #f2f2f2;}
 
-#feature_tbl tbody tr:hover {background-color: #ddd;}
+#feature_tbl tbody tr:hover, #all_clients tbody tr:hover, {background-color: #ddd;}
 
-#feature_tbl th {
+#feature_tbl th,  #all_clients th,{
     padding-top: 10px;
     padding-bottom: 10px;
     text-align: center;
     background: #8a97a0;
     color: #FFF;
 }
-
 
 
 .priority input,select{
@@ -52,3 +55,19 @@ div.btn {
     font-weight: bold;
     cursor:pointer;
 }
+
+/* ----------- client dialog form --------------*/
+
+div#client_form {
+  position: absolute;
+  top: 0;
+  left: 30;
+  width: 400px;
+  height:400px;
+  z-index:500;
+  background-color:lightblue;
+}
+div#client_form td {font-size: 13px;}
+
+div#client_form td input {font-size: 12px;}
+

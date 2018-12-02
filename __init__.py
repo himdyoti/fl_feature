@@ -3,6 +3,7 @@ import sqlalchemy as schemy
 from flask_login import LoginManager
 from flask.json import JSONEncoder
 from datetime import datetime
+import calendar
 
 class CustomJSONEncoder(JSONEncoder):
     #http://flask.pocoo.org/snippets/119/
@@ -19,6 +20,7 @@ class CustomJSONEncoder(JSONEncoder):
             iterable = iter(obj)
         except TypeError:
             pass
+
         else:
             return list(iterable)
         return JSONEncoder.default(self, obj)
