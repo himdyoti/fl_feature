@@ -86,8 +86,6 @@ var viewModel = function(data, client_id){
 
     self.save = function(){
         dts = ko.toJSON(self.lines());
-        console.log(dts);
-        console.log(JSON.parse(dts));
         //dts = dts.replace(/^(\[)(.*)(\])$/,"{$2}");
         //console.log(dts);
         

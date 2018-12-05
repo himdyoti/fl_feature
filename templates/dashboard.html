@@ -9,7 +9,8 @@
 
 <table border="1" id="all_clients">
 <thead>
-<tr><th>Firstname</th><th>Lastname</th><th>Email</th><th>Telephone</th><th>Address</th><th></th></tr>
+<tr><th colspan="7" style="background-color:darkgrey">Client's Dashboard</th></tr>
+<tr><th>Firstname</th><th>Lastname</th><th>Email</th><th>Telephone</th><th>Address</th><th></th><th></th></tr>
 </thead>
 <tbody  data-bind = "foreach : clients">
 <tr>
@@ -26,23 +27,27 @@
 </tr>
 </tbody>
 </table>
-<div class="btn_groups"><div class="btn" id="create_user">Create User</div></div>
+<div class="btn_groups"><div class="btn" id="create_user" data-bind="click:getclient">Create User</div></div>
 
-<div id="client_form" title="Add new Client" style="display:none;">
+<div id="client_form" style="display:none;">
+    <table style="width: 100%">
+    <tr>
+         <th><span style="font-size:18px;font-weight:bold" data-bind="text:add_edit_txt"></span></th> 
+        <th align="right"><i class="fa fa-close"  data-bind="click:$root.close_mod"></i></th>
+    </tr>
+    </table>
+   
     
-  <form id="form_popup">
-    <span class="close" data-bind="click:$root.close_mod">&times;</span>
-        <table data-bind="with:slctd_client">
+    <p>
+    <form id="form_popup">
+        <table>
         <thead>
-        <tr>
-            <td><input type="hidden" data-bind="value:client_id" /></td>
-            <td></td>
-        </tr>
+
         </thead>
-        <tbody>
+        <tbody data-bind="with : slctd_client">
         <tr>
         <td>FirstName</td>
-        <td><input type="text" name="firstname" data-bind="value:firstname" /></td>
+        <td><input type="text" name="firstname" data-bind="value:firstname" /><input type="hidden" data-bind="value:client_id" /></td>
         </tr>
         <tr>
         <td>LastName</td>
@@ -50,11 +55,15 @@
         </tr>
         <tr>
         <td>Email</td>
-        <td><input type="text" name="email" data-bind="value:email" value=""></td>
+        <td><input type="text" name="email" data-bind="value:email"></td>
+        </tr>
+        <tr>
+        <td>Username</td>
+        <td><input type="text" name="uname" data-bind="value:username"></td>
         </tr>
         <tr>
         <td>Password</td>
-        <td><input type="password" name="password" value=""></td>
+        <td><input type="password" name="password" placeholder="keep blank for original" data-bind="value:password"></td>
         </tr>
         <tr>
         <td>Phone</td>
@@ -64,17 +73,13 @@
         <td>Address</td>
         <td><textarea cols="25" rows="3" name="address" data-bind="value:address"></textarea></td>
         </tr>
-        <tr><td></td><td><input type="submit" /></td></tr>
+        <tr><td></td><td><input type="submit" data-bind="click:$root.submitClient"/></td></tr>
         </tbody>
         </table>
-  </form>
+    </form>
+</p>
 </div>
 
-<script type="text/javascript">
-$( "#create_user" ).on( "click", function() {
-    $("#client_form").show();
-});
-</script>
 
 <script type="text/javascript">
     data = {{ data|tojson|safe }}; 

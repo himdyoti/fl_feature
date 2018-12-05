@@ -5,6 +5,7 @@
         self.firstname = ko.observable();
         self.lastname = ko.observable();
         self.email = ko.observable();
+        self.username = ko.observable();
         self.password = ko.observable();
         self.phone = ko.observable();
         self.address = ko.observable();
@@ -17,7 +18,7 @@
         self.close_mod = function(){
             $("#client_form").hide();
         };
-        self.url_getftrs = function(client){ console.log(client);
+        self.url_getftrs = function(client){
             return "/get_feature_request?cid=" + client.client_id ;
         };
 
@@ -27,8 +28,9 @@
             obj.firstname(cl.firstname);
             obj.lastname(cl.lastname);
             obj.email(cl.email);
+            obj.username(cl.username);
             obj.password(cl.password);
-            obj.phone(cl.phone);
+            obj.phone(cl.telephone);
             obj.address(cl.address);
             obj.url_ftr("/get_feature_request?cid=" + cl.ID);
             obj.client_url("/getclient?cid=" + cl.ID);
@@ -37,6 +39,7 @@
 
         self.clients = ko.observableArray();
         self.slctd_client = ko.observable();
+        self.add_edit_txt = ko.observable("Add Client");
 
         $.each(all_clients, function(indx,cl){
             obj = new Client();
@@ -46,6 +49,7 @@
 
 
         self.getclient = function(client){
+            if(client.client_id && client) {
             $.ajax({
                 url:"/getclient?cid=" + client.client_id() + "&ajxReq=1",
                 type:'get',
@@ -56,13 +60,39 @@
                         client_db = json[0];
                         cl_indx = self.clients().indexOf(client);
                         client = cl_attr_setter(client,client_db);
-                        self.slctd_client = client;
-                        $("#client_form").show();
+                        self.slctd_client(client);
+                        self.add_edit_txt("Edit "+client.firstname()+" "+client.lastname()+"'s Profile");
                     }
+                },
+                complete:function(){
+                    $("#client_form").show();                   
                 }
             });
-            console.log(self.slctd_client.firstname());
+            }
+            else{
+                self.slctd_client(new Client());
+                $("#client_form").show();                
+            }
+
         };
+
+
+        self.submitClient = function(client){
+            cl = ko.toJSON(client);
+            console.log(cl);
+            $.ajax({
+                url:'/addclient',
+                type:'post',
+                data:JSON.stringify(cl),
+                contentType: 'application/json;charset=UTF-8',
+                success:function(){
+
+                },
+                complete:function(){
+
+                }
+            });
+        }
 
 
     }

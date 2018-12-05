@@ -7,8 +7,7 @@ import pdb
 
 @app.route('/')
 @app.route('/getclient')
-def get_clients():
-    
+def get_clients():   
     cid = request.args.get('cid',False)
     ajxReq = request.args.get('ajxReq',False)
     clients = controllerV.get_clients(client_id=cid)
@@ -16,9 +15,12 @@ def get_clients():
         return jsonify(clients)
     return render_template("dashboard.html", data=clients)
 
+
 @app.route('/addclient', methods=['GET', 'POST'])
 def add_client():
-    controllerV.add_clients()
+    data = request.get_json()
+    print(data)
+    #controllerV.add_clients(client=data)
     return "clients added successfully"
 
 
@@ -28,9 +30,9 @@ def get_feature_request():
     cid = request.args.get('cid',False)
     if cid:
         cl_info = controllerV.get_clients(client_id=cid)
-        print(cl_info)
         features = controllerV.get_feature_request(data=cid)
     return render_template("fl_feature.html", data=features, client_info = cl_info)
+
 
 @app.route('/get_product_areas', methods=['GET', 'POST'])
 def get_product_areas():

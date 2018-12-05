@@ -70,8 +70,9 @@ class controllerView:
         return False
 
 
-    def add_clients(self):
-        self.db.add_clients()
+    def add_clients(self,client=False):
+        if client:
+            self.db.add_clients(client)
 
 controllerV = controllerView()
 

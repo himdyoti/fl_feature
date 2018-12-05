@@ -19,11 +19,9 @@ class Database:
         return {'a':'success','b':'data'}
 
     def update_feature_request(self,features):
-        print(features)
-        print(type(features))
+
         features = eval(features)
         for data in features:
-            print("from db.......")
             if data.get('ID',False):
                 self.session.merge(FeatureRequest(ID=data['ID'], Title=data['Title'],
                     client_id=data['client_id'], Description=data['Description'],

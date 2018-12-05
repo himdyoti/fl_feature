@@ -27,7 +27,7 @@ td#to_day{font-size: 11px;font-style: italic;}
 
 #feature_tbl tbody tr:hover, #all_clients tbody tr:hover, {background-color: #ddd;}
 
-#feature_tbl th,  #all_clients th,{
+#feature_tbl th,  #all_clients th, #client_form > table th{
     padding-top: 10px;
     padding-bottom: 10px;
     text-align: center;
@@ -60,14 +60,24 @@ div.btn {
 
 div#client_form {
   position: absolute;
-  top: 0;
-  left: 30;
+  top: 10px;
+  left: 50px;
   width: 400px;
   height:400px;
   z-index:500;
   background-color:lightblue;
+  opacity: 0.9;
+  padding:10px;
 }
+#form_popup table{
+    width: 90%;
+}
+
+.fa-close{
+font-size:18px;
+color:red;
+}
+
 div#client_form td {font-size: 13px;}
 
-div#client_form td input {font-size: 12px;}
 
