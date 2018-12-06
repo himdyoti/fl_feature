@@ -9,6 +9,9 @@
         self.password = ko.observable();
         self.phone = ko.observable();
         self.address = ko.observable();
+        self.state = ko.observable();
+        self.country = ko.observable();
+        self.zipcode = ko.observable();
         self.url_ftr = ko.observable();
         self.client_url = ko.observable();
     }
@@ -32,6 +35,9 @@
             obj.password(cl.password);
             obj.phone(cl.telephone);
             obj.address(cl.address);
+            obj.state(cl.state);
+            obj.country(cl.country);
+            obj.zipcode (cl.zipcode);
             obj.url_ftr("/get_feature_request?cid=" + cl.ID);
             obj.client_url("/getclient?cid=" + cl.ID);
             return obj;            
@@ -76,6 +82,10 @@
 
         };
 
+        self.kojson = function(client){
+
+        };
+
 
         self.submitClient = function(client){
             cl = ko.toJSON(client);
@@ -83,7 +93,7 @@
             $.ajax({
                 url:'/addclient',
                 type:'post',
-                data:JSON.stringify(cl),
+                data:cl,
                 contentType: 'application/json;charset=UTF-8',
                 success:function(){
 

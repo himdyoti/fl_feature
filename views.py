@@ -19,8 +19,8 @@ def get_clients():
 @app.route('/addclient', methods=['GET', 'POST'])
 def add_client():
     data = request.get_json()
-    print(data)
-    #controllerV.add_clients(client=data)
+    #print(data)
+    controllerV.add_clients(client=data)
     return "clients added successfully"
 
 

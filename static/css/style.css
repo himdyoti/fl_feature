@@ -63,11 +63,12 @@ div#client_form {
   top: 10px;
   left: 50px;
   width: 400px;
-  height:400px;
+  height:550px;
   z-index:500;
   background-color:lightblue;
   opacity: 0.9;
   padding:10px;
+  font-size: 12px;
 }
 #form_popup table{
     width: 90%;
@@ -79,5 +80,6 @@ color:red;
 }
 
 div#client_form td {font-size: 13px;}
+div#client_form td input, textarea{font-size: 12px;}
 
 

@@ -24,9 +24,9 @@ class client(Base):
     email = Column(String(50))
     telephone = Column(String(15))
     address = Column(String(120))
-    state = String(20)
-    country = String(20)
-    zipcode = String(20)
+    state = Column(String(20))
+    country = Column(String(20))
+    zipcode = Column(String(20))
     date_added = Column(DateTime, default=datetime.utcnow)
 
 class ProductArea(Base):

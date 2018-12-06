@@ -60,9 +60,28 @@ class Database:
         else:
             return sqlQ.order_by(client.firstname.asc()).all()
 
-    def add_clients(self):
-        self.session.add_all(objects)
-        self.session.commit()
+    def add_clients(self,data):
+        print(data)
+        print(type(data))
+        print(data.get('client_id',False))
+        if data.get('client_id',False):
+            self.session.merge(client(ID=data['client_id'], username=data['username'],
+                password=data['password'], firstname=data['firstname'],
+                lastname=data['lastname'], email=data['email'], telephone=data['phone'],
+                address=data['address'],state=data['state'], country=data['country'], zipcode=data['zipcode']))
+        else:
+            print(data['username']);
+            self.session.merge(client(username=data['username'],
+                password=data['password'], firstname=data['firstname'],
+                lastname=data['lastname'], email=data['email'], telephone=data['phone'],
+                address=data['address'],state=data['state'], country=data['country'], zipcode=data['zipcode']))
+        try:
+            self.session.commit()
+            return True
+        except:
+            self.session.rollback()
+            self.session.flush()
+            return false
 
     def remove_feature_request(feature):
         self.session.query(FeatureRequest).filter(FeatureRequest.ID == feature.ID).delete()

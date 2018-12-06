@@ -64,7 +64,6 @@ class controllerView:
 
     def get_clients(self,client_id=False):
         qdata = self.db.get_clients(client_id)
-        print(qdata)
         if qdata:
             return list(controllerView.filter_orm_rs(qdata))
         return False
