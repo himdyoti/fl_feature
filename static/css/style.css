@@ -82,4 +82,26 @@ color:red;
 div#client_form td {font-size: 13px;}
 div#client_form td input, textarea{font-size: 12px;}
 
+/*https://www.w3schools.com/howto/tryit.asp?filename=tryhow_css_menu_hor_scroll */
+
+div.scrollmenu {
+    background-color: #622e2e;
+    overflow: auto;
+    max-width: 350px;
+    white-space: nowrap;
+    font-size: 12px;
+}
+
+div.scrollmenu a {
+    display: inline-block;
+    color: white;
+    text-align: center;
+    padding: 10px;
+    text-decoration: none;
+}
+
+div.scrollmenu a:hover {
+    background-color: #777;
+}
+
 

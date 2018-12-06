@@ -1,5 +1,9 @@
 
-{% include "layout.html" %}
+{% extends "layout.html" %}
+{% block head %}
+{{ super() }}
+<script src="{{url_for('static',filename='js/main.js')}}"></script>
+{% endblock%}
 {% block content %}
 {% set client_info = client_info[0] %}
 
@@ -56,7 +60,8 @@
 
 {% endblock %}
 
-<script src="{{url_for('static',filename='js/main.js')}}"></script>
+{% block footer %}
+{{ super() }}
 <script type="text/javascript">
     data = {{ data|tojson|safe }}; 
     client_id = '{{ client_info.ID }}';
@@ -69,5 +74,7 @@
     console.log(tt);
     $("#to_day").text(tt);
 </script>
+{% endblock %}
+
 
 

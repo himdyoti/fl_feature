@@ -6,10 +6,21 @@
 {% endblock%}
 
 {% block content %}
+{{ super() }}
 
 <table border="1" id="all_clients">
 <thead>
-<tr><th colspan="7" style="background-color:darkgrey">Client's Dashboard</th></tr>
+<tr><td colspan="3" style="color:blue;">Client's Dashboard</td>
+<td colspan="4" align="right">
+<div class="scrollmenu">
+  <a href="#home">Home</a>
+  <a href="/productarea">ProductArea</a>
+  <a href="#contact">Contact</a>
+  <a href="#about">About</a>
+  <a href="#support">Support</a>
+</div>
+</td>
+</tr>
 <tr><th>Firstname</th><th>Lastname</th><th>Email</th><th>Telephone</th><th>Address</th><th></th><th></th></tr>
 </thead>
 <tbody  data-bind = "foreach : clients">
@@ -100,6 +111,10 @@
     apply_client_binding(data);
 </script>
 
+{% endblock %}
+
+{% block footer %}
+{{ super() }}
 {% endblock %}
 
 
