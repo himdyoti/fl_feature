@@ -28,7 +28,10 @@ class CustomJSONEncoder(JSONEncoder):
 app = Flask(__name__)
 app.json_encoder = CustomJSONEncoder
 app.config.from_pyfile('config.cfg')
-import fl_britecore.views
+from . import views
 from .db import DB
 __all__=['app','DB']
+
+if __name__=="__main__":
+    app.run(host='0.0.0.0')
 

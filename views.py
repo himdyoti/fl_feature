@@ -1,5 +1,5 @@
 from flask import render_template, request, jsonify
-from fl_britecore import app
+from . import app
 from .forms import *
 from .views_controller import controllerV
 import json
