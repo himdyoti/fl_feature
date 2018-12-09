@@ -17,7 +17,6 @@ var FeatureOne = function(){
         else
         console.log("not ...");
     });
-    self
 
 }
 
@@ -30,7 +29,7 @@ var viewModel = function(data, client_id){
         self.lines.sort(function (left, right) { return left.priority() == right.priority() ? 0 : (left.priority() < right.priority() ? -1 : 1) }) ;
     };
     product_areas = [];
-    $.ajax({ url:'/get_product_areas', method:'get', async:false, dataType:'json',success:function(data){
+    $.ajax({ url:'/product_areas', method:'get', async:false, dataType:'json',success:function(data){
         $.each(data, function(inx,v){console.log(v);
            product_areas.push(v);
         });
@@ -40,7 +39,6 @@ var viewModel = function(data, client_id){
 
     if(data.length >0){ 
         $.each(data,function(inx,v){ 
-            date_compute(v.target_date);
             obj = new FeatureOne();
             obj.ID(v.ID);
             obj.Title(v.Title);

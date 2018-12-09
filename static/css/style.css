@@ -6,28 +6,28 @@ td#to_day{font-size: 11px;font-style: italic;}
 #tbl_header{width:100%; table-layout: fixed;}
 #tbl_header td, #tbl_header th{ padding:15px; }
 
-#feature_tbl, #all_clients {
+.feature_tbl, #all_clients {
     font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
     border-collapse: collapse;
     width: 100%;
 }
 
-#feature_tbl input.title, input.desc{
+.feature_tbl input.title, input.desc{
     width: 95%;
 }
 
 
-#feature_tbl td, #feature_tbl th, #all_clients td, #all_clients th {
+.feature_tbl td, .feature_tbl th, #all_clients td, #all_clients th {
     border: 1px solid #ddd;
     padding: 6px;
 }
 
-#feature_tbl tbody tr:nth-child(even), #all_clients tbody tr:nth-child(even)
+.feature_tbl tbody tr:nth-child(even), #all_clients tbody tr:nth-child(even)
 {background-color: #f2f2f2;}
 
-#feature_tbl tbody tr:hover, #all_clients tbody tr:hover, {background-color: #ddd;}
+.feature_tbl tbody tr:hover, #all_clients tbody tr:hover, {background-color: #ddd;}
 
-#feature_tbl th,  #all_clients th, #client_form > table th{
+.feature_tbl th,  #all_clients th, #client_form > table th{
     padding-top: 10px;
     padding-bottom: 10px;
     text-align: center;

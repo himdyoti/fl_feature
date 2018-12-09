@@ -1,0 +1,69 @@
+
+{% extends "layout.html" %}
+{% block head %}
+{{ super() }}
+<script src="{{url_for('static',filename='js/feature_domain.js')}}"></script>
+{% endblock%}
+{% block content %}
+
+<table id="tbl_header">
+<tr>
+    <th align="center">Feature Domain</th>
+    <td align="right" id="to_day"></td>
+</tr>
+
+</table>
+
+<form action="/product_areas" method="post">
+    <table class="feature_tbl">
+        <thead>
+        <tr><th>Line</th><th>Title</th><th>Description</th><th></th></tr>
+        </thead>
+        <tbody data-bind='foreach: lines'>
+         
+            <tr>
+                <td style="width:20px;">
+                    <span data-bind="text:$index">
+                    <input type="hidden" data-bind="value:ID" />
+                </td>
+                <td>
+                    <input type="text" class="title" data-bind="value: area_name" />
+                </td>
+                <td>
+                    <input type="text" class="desc" data-bind="value:description"/>
+                </td>
+
+                <td>
+                    <i class="fa fa-trash-o" style="font-size:25px;color:red" data-bind='click: $root.removeLine'></i>
+                </td>
+            </tr>
+        
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="2"><div class="btn" data-bind='click: addLine'>Add Domain</div></td>
+                <td><div class="btn" data-bind='click: submitDomain'>Submit</div></td>
+            </tr>
+        </tfoot>
+    </table>
+</form>
+
+{% endblock %}
+
+{% block footer %}
+{{ super() }}
+
+<script type="text/javascript">
+    data = {{ pareas|tojson|safe }};
+    apply_binding(data);
+</script>
+<script type="text/javascript">
+    to_day = new Date();
+    tt= to_day.toString().replace(/^(.*?[0-9]{4}).*$/g,"$1");
+    console.log(tt);
+    $("#to_day").text(tt);
+</script>
+{% endblock %}
+
+
+

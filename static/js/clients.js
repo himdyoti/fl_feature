@@ -95,8 +95,20 @@
                 type:'post',
                 data:cl,
                 contentType: 'application/json;charset=UTF-8',
-                success:function(){
-
+                dataType:'json',
+                success:function(json){ console.log(json);
+                   if(typeof(json['client_id'] !="undefined") && json['client_id']){
+                        if(client.client_id !="undefined" && json['client_id'] == client.client_id()){
+                            alert("client edited successfully");
+                        }
+                        else{
+                            client.client_id(json['client_id']);
+                            client.url_ftr("/get_feature_request?cid=" + json['client_id']);
+                            obj.client_url("/getclient?cid=" + json['client_id']);
+                            self.clients.push(client);
+                            alert("client added successfully");
+                        }
+                    }
                 },
                 complete:function(){
 

@@ -19,7 +19,6 @@ class Database:
         return {'a':'success','b':'data'}
 
     def update_feature_request(self,features):
-
         features = eval(features)
         for data in features:
             if data.get('ID',False):
@@ -39,7 +38,7 @@ class Database:
         except:
             self.session.rollback()
             self.session.flush()
-            return false
+            return False
 
 
 
@@ -50,8 +49,38 @@ class Database:
             .filter(FeatureRequest.client_id==id).order_by(FeatureRequest.priority.asc())
         return query.all()
 
-    def get_product_areas(self):
-        return self.session.query(ProductArea.ID, ProductArea.area_name).all()    
+    def remove_feature_request(feature):
+        self.session.query(FeatureRequest).filter(FeatureRequest.ID == feature.ID).delete()
+        self.session.commit()
+
+    def product_areas(self):
+        return self.session.query(ProductArea.ID, ProductArea.area_name, ProductArea.description).all() 
+
+    def remove_parea(self,parea): 
+        self.session.query(ProductArea).filter(ProductArea.ID == parea['ID']).delete()
+        try:
+            self.session.commit() 
+            return True
+        except:   # ---
+            return False
+
+    def update_product_area(self,parea):
+        parea = eval(parea)
+        for data in parea:
+            if data.get('ID',False):
+                self.session.merge(ProductArea(ID=data['ID'], area_name=data['area_name'],
+                    description=data['description']))
+            else:
+                self.session.merge(ProductArea(area_name=data['area_name'],
+                    description=data['description']))
+
+        try:
+            self.session.commit()
+            return True
+        except:
+            self.session.rollback()
+            self.session.flush()
+            return False
 
     def get_clients(self,clid=False):
         sqlQ = self.session.query(client)
@@ -61,31 +90,26 @@ class Database:
             return sqlQ.order_by(client.firstname.asc()).all()
 
     def add_clients(self,data):
-        print(data)
-        print(type(data))
-        print(data.get('client_id',False))
+
         if data.get('client_id',False):
-            self.session.merge(client(ID=data['client_id'], username=data['username'],
+            cl=self.session.merge(client(ID=data['client_id'], username=data['username'],
                 password=data['password'], firstname=data['firstname'],
                 lastname=data['lastname'], email=data['email'], telephone=data['phone'],
                 address=data['address'],state=data['state'], country=data['country'], zipcode=data['zipcode']))
         else:
-            print(data['username']);
-            self.session.merge(client(username=data['username'],
+            cl=self.session.merge(client(username=data['username'],
                 password=data['password'], firstname=data['firstname'],
                 lastname=data['lastname'], email=data['email'], telephone=data['phone'],
                 address=data['address'],state=data['state'], country=data['country'], zipcode=data['zipcode']))
         try:
             self.session.commit()
-            return True
+            return cl.ID
         except:
             self.session.rollback()
             self.session.flush()
-            return false
+            return False
 
-    def remove_feature_request(feature):
-        self.session.query(FeatureRequest).filter(FeatureRequest.ID == feature.ID).delete()
-        self.session.commit()
+
 
 DB = Database()
 

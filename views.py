@@ -20,24 +20,29 @@ def get_clients():
 def add_client():
     data = request.get_json()
     #print(data)
-    controllerV.add_clients(client=data)
-    return "clients added successfully"
+    status = controllerV.add_clients(client=data)
+    return jsonify({'client_id':status})
 
 
-@app.route('/get_feature_request', methods=['GET', 'POST'])
-def get_feature_request():
-    features, cl_info = {},{}
-    cid = request.args.get('cid',False)
-    if cid:
-        cl_info = controllerV.get_clients(client_id=cid)
-        features = controllerV.get_feature_request(data=cid)
-    return render_template("fl_feature.html", data=features, client_info = cl_info)
 
+@app.route('/product_areas', methods=['GET', 'POST'])
+def product_areas():
+    if request.method == 'POST':
+        #request.data = request.data.decode('utf-8').encode('utf-8')
+        data = request.get_json()
+        status = controllerV.update_product_area(parea=data)
+        return jsonify({'status':status})
+    data = controllerV.product_areas()
+    if request.is_xhr:
+        return jsonify(data)
+    else:
+        return render_template("feature_domain.html", pareas=data)
 
-@app.route('/get_product_areas', methods=['GET', 'POST'])
-def get_product_areas():
-    data = controllerV.get_product_areas()
-    return jsonify(data)
+@app.route('/remove_parea', methods=['GET', 'POST'])
+def remove_parea():
+    if request.method == 'POST':
+        status = controllerV.remove_parea(parea=request.json)
+        return jsonify({'status':status})
 
 """
 @app.route('/add_feature_request', methods=['GET', 'POST'])
@@ -53,6 +58,16 @@ def edit_feature():
         controllerV.edit_feature_request(post=True, data=request.ftrs_data)
 """
 
+@app.route('/get_feature_request', methods=['GET', 'POST'])
+def get_feature_request():
+    features, cl_info = {},{}
+    cid = request.args.get('cid',False)
+    if cid:
+        cl_info = controllerV.get_clients(client_id=cid)
+        features = controllerV.get_feature_request(data=cid)
+    return render_template("fl_feature.html", data=features, client_info = cl_info)
+
+
 @app.route('/update_feature_request', methods=['GET', 'POST'])
 def update_feature():
     
@@ -67,4 +82,8 @@ def update_feature():
 def remove_feature():
     if request.method == 'POST':
         controllerV.remove_feature_request(data=request.feature)
+
+
+
+
 

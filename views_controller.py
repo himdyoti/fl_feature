@@ -35,7 +35,23 @@ class controllerView:
         for rs in rs_list:
             rs_dict = rs._asdict() if hasattr(rs,'_asdict') else rs.__dict__ 
             rs_dict = {k:v for (k,v) in rs_dict.items() if k in tcols}
-            yield rs_dict      
+            yield rs_dict  
+
+
+    def product_areas(self):
+        data = self.db.product_areas()
+        resultset = [rs._asdict() for rs in data]
+        return resultset
+
+    def update_product_area(self, **kargs):       
+        data = kargs['parea']
+        return self.db.update_product_area(data)
+
+    def remove_parea(self, **kargs):
+        data = kargs['parea']
+        return self.db.remove_parea(data)
+
+
     
     def update_feature_request(self, **kargs):       
         data = kargs['features']
@@ -47,14 +63,6 @@ class controllerView:
         data = self.db.get_feature_request(client_id)
         resultset = [rs._asdict() for rs in data]
         return resultset
-
-        
-
-    def get_product_areas(self):
-        data = self.db.get_product_areas()
-        resultset = [rs._asdict() for rs in data]
-        return resultset
-
 
 
     def remove_feature_request(self,  **kargs):       
@@ -71,7 +79,7 @@ class controllerView:
 
     def add_clients(self,client=False):
         if client:
-            self.db.add_clients(client)
+            return self.db.add_clients(client)
 
 controllerV = controllerView()
 

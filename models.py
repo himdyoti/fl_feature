@@ -33,6 +33,7 @@ class ProductArea(Base):
     __tablename__ = 'product_area'
     ID = Column(Integer, Sequence('id_seq'), primary_key=True)
     area_name = Column(String(30), nullable=False)
+    description = Column(String(120), nullable=True)
 
 
 
