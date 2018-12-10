@@ -1,4 +1,6 @@
 var VM = {};
+client_id = false;
+
 var FeatureOne = function(){
     var self = this;
     self.ID = ko.observable();
@@ -131,8 +133,9 @@ var viewModel = function(data, client_id){
 
 };
 
-function apply_binding(data,client_id){
-    VM = new viewModel(data,client_id);
+function apply_binding(data,cid){
+    client_id = cid;
+    VM = new viewModel(data,cid);
     ko.applyBindings(VM);
 }
 
