@@ -93,9 +93,12 @@ var viewModel = function(data, client_id){
             url:'/update_feature_request',
             type:'post',
             data:JSON.stringify(dts),
+            dataType:'json',
             contentType: 'application/json;charset=UTF-8',
-            success:function(){
-                alert("features updated successfully");
+            success:function(json){
+                status = json['status'] ? "features updated successfully" : "update Fail" ;
+                alert(status);
+                console.log(json);
             }
         });
         /*
@@ -184,9 +187,13 @@ function ajax_remove_feature(line){
     $.ajax({
         url:'/remove_feature_request',
         method:'post',
-        data:{'feature':ko.toJSON(line)},
-        success: function(){
-            status=true;
+        data:ko.toJSON(line),
+        contentType: 'application/json;charset=UTF-8',
+        dataType:'json',
+        success: function(json){
+            console.log(json)
+            status = json['status'] ; //? "Deleted successfully" : "Not deleted";
+            alert(status);
         },
         error:function(jqXHR){
             status = false;

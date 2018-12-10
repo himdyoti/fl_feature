@@ -75,13 +75,14 @@ def update_feature():
         #request.data = request.data.decode('utf-8').encode('utf-8')
         data = request.get_json()
         status = controllerV.update_feature_request(features=data)
-        return status
+        return jsonify({'status':status})
     
 
 @app.route('/remove_feature_request', methods=['GET', 'POST'])
 def remove_feature():
     if request.method == 'POST':
-        controllerV.remove_feature_request(data=request.feature)
+        status = controllerV.remove_feature_request(data=request.json)
+        return jsonify({'status':status})
 
 
 

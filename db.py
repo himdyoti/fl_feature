@@ -49,9 +49,13 @@ class Database:
             .filter(FeatureRequest.client_id==id).order_by(FeatureRequest.priority.asc())
         return query.all()
 
-    def remove_feature_request(feature):
-        self.session.query(FeatureRequest).filter(FeatureRequest.ID == feature.ID).delete()
-        self.session.commit()
+    def remove_feature_request(self,feature):
+        self.session.query(FeatureRequest).filter(FeatureRequest.ID == feature['ID']).delete()
+        try:
+            self.session.commit()
+            return True
+        except:
+            return False
 
     def product_areas(self):
         return self.session.query(ProductArea.ID, ProductArea.area_name, ProductArea.description).all() 
