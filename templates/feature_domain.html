@@ -2,7 +2,6 @@
 {% extends "layout.html" %}
 {% block head %}
 {{ super() }}
-<script src="{{url_for('static',filename='js/feature_domain.js')}}"></script>
 {% endblock%}
 {% block content %}
 
@@ -52,12 +51,15 @@
 
 {% block footer %}
 {{ super() }}
+<script src="{{url_for('static',filename='js/feature_domain.js')}}"></script>
 
 <script type="text/javascript">
-    data = {{ pareas|tojson|safe }};
-    apply_binding(data);
+    data = {{ pareas|tojson|safe }};  
 </script>
+
 <script type="text/javascript">
+    apply_binding(data);
+
     to_day = new Date();
     tt= to_day.toString().replace(/^(.*?[0-9]{4}).*$/g,"$1");
     console.log(tt);

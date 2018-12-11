@@ -2,7 +2,7 @@
 
 {% block head %}
 {{ super() }}
-<script src="{{url_for('static',filename='js/clients.js')}}"></script>
+
 {% endblock%}
 
 {% block content %}
@@ -108,13 +108,17 @@
 
 <script type="text/javascript">
     data = {{ data|tojson|safe }}; 
-    apply_client_binding(data);
+    
 </script>
 
 {% endblock %}
 
 {% block footer %}
 {{ super() }}
+<script src="{{url_for('static',filename='js/clients.js')}}"></script>
+<script type="text/javascript">
+apply_client_binding(data);
+</script>
 {% endblock %}
 
 
