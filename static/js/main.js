@@ -1,5 +1,4 @@
 var VM = {};
-client_id = false;
 
 var FeatureOne = function(){
     var self = this;
@@ -12,9 +11,9 @@ var FeatureOne = function(){
     self.area_name = ko.observable();
     self.product_area_id = ko.observable();
     self .pa_slct = ko.observableArray();
-    self.product_area_id.subscribe(function(nv){
+    self.product_area_id.subscribe(function(nv){ 
         if(nv && !isNaN(parseInt(nv))){
-            self.product_area_id(nv);
+            self.product_area_id(nv); // infinite 
         }
         else
         console.log("not ...");
@@ -27,17 +26,20 @@ var FeatureOne = function(){
 var viewModel = function(data, client_id){
     var self = this;
     self.lines = ko.observableArray();
+    self.selectbox = ko.observableArray();
+    self.styleSet = ko.observable();
+    product_areas = [];
+
     self.sort1 = function(){
         self.lines.sort(function (left, right) { return left.priority() == right.priority() ? 0 : (left.priority() < right.priority() ? -1 : 1) }) ;
     };
-    product_areas = [];
+    
     $.ajax({ url:'/product_areas', method:'get', async:false, dataType:'json',success:function(data){
         $.each(data, function(inx,v){console.log(v);
            product_areas.push(v);
         });
     }});
 
-    self.selectbox = ko.observableArray();
 
     if(data.length >0){ 
         $.each(data,function(inx,v){ 
@@ -85,6 +87,12 @@ var viewModel = function(data, client_id){
 
 
     self.save = function(){
+        is_valid = validateData(self.lines());
+        if(!is_valid.status){
+            indx = self.lines.indexOf(is_valid.ftrObj)
+            style_handler(is_valid,indx);
+            return false;
+        }
         dts = ko.toJSON(self.lines());
         //dts = dts.replace(/^(\[)(.*)(\])$/,"{$2}");
         //console.log(dts);
@@ -96,7 +104,7 @@ var viewModel = function(data, client_id){
             dataType:'json',
             contentType: 'application/json;charset=UTF-8',
             success:function(json){
-                status = json['status'] ? "features updated successfully" : "update Fail" ;
+                status = json['status'] ? "features updated successfully" : "updation Failed" ;
                 alert(status);
                 console.log(json);
             }
@@ -135,6 +143,25 @@ var viewModel = function(data, client_id){
     };
 
 };
+
+function validateData(ft_data){
+    var is_valid = {'status':true,'mssg':'success', 'ftrObj':{}};
+    $.each(ft_data,function(inx,ftr){ 
+        if(typeof(ftr.client_id()) == "undefined"){
+            is_valid =  {'status':false,'mssg':'client_id', 'ftrObj':ftr};
+            return false;
+        }
+        if(typeof(ftr.Title()) == "undefined" ){
+            is_valid =  {'status':false,'mssg':'Title', 'ftrObj':ftr};
+            return false;
+        }
+        if(typeof(ftr.priority()) == "undefined"){
+            is_valid = {'status':false,'mssg':'priority', 'ftrObj':ftr};
+            return false;
+        }
+    });
+    return is_valid;
+}
 
 function apply_binding(data,cid){
     client_id = cid;
@@ -212,6 +239,14 @@ function date_compute(dts){
     ft_date = yyyy + "-" + mm + "-" + dd  ;
     return ft_date;
 
+}
+
+function style_handler(is_valid,indx){
+    console.log(indx);
+    alert("Feature Cannot be Left Blank: " + is_valid.mssg);
+    tr = $("#feature_tbl tbody").find('tr').eq(indx);
+    $(tr).css('border','2px solid red');
+    setTimeout(function(){ $('tr').css('border',''); }, 5000);
 }
 
 

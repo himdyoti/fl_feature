@@ -19,18 +19,28 @@ class Database:
         return {'a':'success','b':'data'}
 
     def update_feature_request(self,features):
+
         features = eval(features)
         for data in features:
             if data.get('ID',False):
-                self.session.merge(FeatureRequest(ID=data['ID'], Title=data['Title'],
-                    client_id=data['client_id'], Description=data['Description'],
-                    priority=data['priority'], target_date=data['target_date'],
-                    product_area_id=data['product_area_id']))
+                self.session.merge(FeatureRequest(
+                    ID=data['ID'], 
+                    Title=data['Title'],
+                    client_id=data['client_id'], 
+                    Description=data.get('Description',None),
+                    priority=data['priority'], 
+                    target_date=data['target_date'],
+                    product_area_id=data['product_area_id'])
+                )
             else:
-                self.session.merge(FeatureRequest(Title=data['Title'],
-                    client_id=data['client_id'], Description=data['Description'],
-                    priority=data['priority'], target_date=data['target_date'],
-                    product_area_id=data['product_area_id']))
+                self.session.merge(FeatureRequest(
+                    Title=data['Title'],
+                    client_id=data['client_id'],
+                    Description=data.get('Description',None),
+                    priority=data['priority'],
+                    target_date=data['target_date'],
+                    product_area_id=data['product_area_id'])
+                )
 
         try:
             self.session.commit()

@@ -9,7 +9,7 @@ class FeatureRequest(Base):
     Title = Column(String(50))
     Description = Column(String(500))
     client_id = Column(Integer, ForeignKey('client.ID'), nullable=False)
-    priority = Column(Integer, nullable=False)
+    priority = Column(Integer, nullable=True)
     target_date = Column(Date)
     product_area_id = Column(Integer, ForeignKey('product_area.ID'))
     UniqueConstraint('client_id', 'priority', name='ft_requ_1')
