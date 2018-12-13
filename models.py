@@ -12,6 +12,7 @@ class FeatureRequest(Base):
     priority = Column(Integer, nullable=True)
     target_date = Column(Date)
     product_area_id = Column(Integer, ForeignKey('product_area.ID'))
+    status = Column(Integer, nullable=False, default=1)
     UniqueConstraint('client_id', 'priority', name='ft_requ_1')
 
 class client(Base):
@@ -62,7 +63,7 @@ if __name__=="__main__":
     host = input('Hostname: ')
     dbname = input('Database Name: ')
     db_url = db_urls[db_type - 1].format(user=user,passwd=passwd,host=host,dbname=dbname)
-    engine = create_engine(db_url)
+    engine = create_engine(db_url,echo=True)
     Base.metadata.create_all(engine)
 
 

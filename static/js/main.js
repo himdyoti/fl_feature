@@ -18,15 +18,17 @@ var FeatureOne = function(){
         else
         console.log("not ...");
     });
+    self.status = ko.observable();
 
 }
 
 
 
-var viewModel = function(data, client_id){
+var viewModel = function(data, client_id, ftr_status){
     var self = this;
     self.lines = ko.observableArray();
     self.selectbox = ko.observableArray();
+    self.status_arr = ko.observableArray(ftr_status);
     self.styleSet = ko.observable();
     product_areas = [];
 
@@ -53,6 +55,7 @@ var viewModel = function(data, client_id){
             obj.area_name(v.area_name);
             obj.product_area_id(v.product_area_id);
             obj.pa_slct(product_areas);
+            obj.status(v.status);
             self.lines.push(obj);
             self.selectbox.push(obj.priority());
         });
@@ -147,15 +150,15 @@ var viewModel = function(data, client_id){
 function validateData(ft_data){
     var is_valid = {'status':true,'mssg':'success', 'ftrObj':{}};
     $.each(ft_data,function(inx,ftr){ 
-        if(typeof(ftr.client_id()) == "undefined"){
+        if(typeof(ftr.client_id()) == "undefined" || !ftr.client_id()){
             is_valid =  {'status':false,'mssg':'client_id', 'ftrObj':ftr};
             return false;
         }
-        if(typeof(ftr.Title()) == "undefined" ){
+        if(typeof(ftr.Title()) == "undefined" || !ftr.Title()){ 
             is_valid =  {'status':false,'mssg':'Title', 'ftrObj':ftr};
             return false;
         }
-        if(typeof(ftr.priority()) == "undefined"){
+        if(typeof(ftr.priority()) == "undefined" || !ftr.priority()){
             is_valid = {'status':false,'mssg':'priority', 'ftrObj':ftr};
             return false;
         }
@@ -163,9 +166,9 @@ function validateData(ft_data){
     return is_valid;
 }
 
-function apply_binding(data,cid){
+function apply_binding(data,cid,ftr_status){
     client_id = cid;
-    VM = new viewModel(data,cid);
+    VM = new viewModel(data, cid, ftr_status);
     ko.applyBindings(VM);
 }
 

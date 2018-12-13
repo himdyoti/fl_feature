@@ -1,5 +1,5 @@
 from flask import render_template, request, jsonify
-from . import app
+from . import app, feature_status
 from .forms import *
 from .views_controller import controllerV
 import json
@@ -65,7 +65,7 @@ def get_feature_request():
     if cid:
         cl_info = controllerV.get_clients(client_id=cid)
         features = controllerV.get_feature_request(data=cid)
-    return render_template("fl_feature.html", data=features, client_info = cl_info)
+    return render_template("fl_feature.html", data=features, client_info = cl_info, ftr_status=feature_status)
 
 
 @app.route('/update_feature_request', methods=['GET', 'POST'])

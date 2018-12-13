@@ -43,6 +43,7 @@
                 </td>
                 <td><input type="date" data-bind="value:target_date" /></td>
                 <td><select name="parea" data-bind="options:pa_slct,optionsText: 'area_name',optionsValue:'ID',value:product_area_id,optionsCaption: '...'"></select></td>
+                <td><select name="status" data-bind="options:$root.status_arr,optionsText: 'name',optionsValue:'sid',value:status, optionsCaption: '...'></select></td>
                 <td>
                     <i class="fa fa-trash-o" style="font-size:25px;color:red" data-bind='click: $root.removeLine'></i>
                 </td>
@@ -60,6 +61,7 @@
 <script type="text/javascript">
     data = {{ data|tojson|safe }}; 
     client_id = '{{ client_info['ID']}}';
+    status_arr = {{ftr_status|tojson|safe}};
 </script>
 {% endblock %}
 
@@ -68,7 +70,8 @@
 <script src="{{url_for('static',filename='js/main.js')}}"></script>
 
 <script type="text/javascript">
-    apply_binding(data, client_id);
+    console.log(status_arr);
+    apply_binding(data, client_id, status_arr);
 
     to_day = new Date();
     tt= to_day.toString().replace(/^(.*?[0-9]{4}).*$/g,"$1");
