@@ -18,13 +18,6 @@
 
     var ClientVM = function(all_clients){
         var self = this;
-        self.close_mod = function(){
-            $("#client_form").hide();
-        };
-        self.url_getftrs = function(client){
-            return "/get_feature_request?cid=" + client.client_id ;
-        };
-
 
         var cl_attr_setter = function(obj, cl){
             obj.client_id(cl.ID);
@@ -47,6 +40,13 @@
         self.slctd_client = ko.observable();
         self.add_edit_txt = ko.observable("Add Client");
         self.show_client_form = ko.observable(false);
+
+        self.close_mod = function(){
+            self.show_client_form(false);
+        };
+        self.url_getftrs = function(client){
+            return "/get_feature_request?cid=" + client.client_id ;
+        };
 
         $.each(all_clients, function(indx,cl){
             obj = new Client();
