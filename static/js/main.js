@@ -10,15 +10,7 @@ var FeatureOne = function(){
     self.target_date = ko.observable();
     self.area_name = ko.observable();
     self.product_area_id = ko.observable();
-    self .pa_slct = ko.observableArray();
-    self.product_area_id.subscribe(function(nv){ 
-        if(nv && !isNaN(parseInt(nv))){
-            self.product_area_id(nv); // infinite 
-        }
-        else
-        console.log("not ...");
-    });
-    self.status = ko.observable();
+    self.status_id = ko.observable();
 
 }
 
@@ -29,6 +21,7 @@ var viewModel = function(data, client_id, ftr_status){
     self.lines = ko.observableArray();
     self.selectbox = ko.observableArray();
     self.status_arr = ko.observableArray(ftr_status);
+    self.product_areas = ko.observableArray();
     self.styleSet = ko.observable();
     product_areas = [];
 
@@ -38,13 +31,13 @@ var viewModel = function(data, client_id, ftr_status){
     
     $.ajax({ url:'/product_areas', method:'get', async:false, dataType:'json',success:function(data){
         $.each(data, function(inx,v){console.log(v);
-           product_areas.push(v);
+           self.product_areas.push(v);
         });
     }});
 
 
     if(data.length >0){ 
-        $.each(data,function(inx,v){ 
+        $.each(data,function(inx,v){ console.log(v);
             obj = new FeatureOne();
             obj.ID(v.ID);
             obj.Title(v.Title);
@@ -54,8 +47,7 @@ var viewModel = function(data, client_id, ftr_status){
             obj.target_date(date_compute(v.target_date));
             obj.area_name(v.area_name);
             obj.product_area_id(v.product_area_id);
-            obj.pa_slct(product_areas);
-            obj.status(v.status);
+            obj.status_id(v.status_id);
             self.lines.push(obj);
             self.selectbox.push(obj.priority());
         });
@@ -98,7 +90,7 @@ var viewModel = function(data, client_id, ftr_status){
         }
         dts = ko.toJSON(self.lines());
         //dts = dts.replace(/^(\[)(.*)(\])$/,"{$2}");
-        //console.log(dts);
+        console.log(dts);
         
         $.ajax({
             url:'/update_feature_request',

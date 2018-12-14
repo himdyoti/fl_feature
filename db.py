@@ -30,7 +30,9 @@ class Database:
                     Description=data.get('Description',None),
                     priority=data['priority'], 
                     target_date=data['target_date'],
-                    product_area_id=data['product_area_id'])
+                    product_area_id=data['product_area_id'],
+                    status_id=data['status_id']
+                    )
                 )
             else:
                 self.session.merge(FeatureRequest(
@@ -39,7 +41,9 @@ class Database:
                     Description=data.get('Description',None),
                     priority=data['priority'],
                     target_date=data['target_date'],
-                    product_area_id=data['product_area_id'])
+                    product_area_id=data['product_area_id'],
+                    status_id=data['status_id']
+                    )
                 )
 
         try:
@@ -55,7 +59,7 @@ class Database:
     def get_feature_request(self,id):
         query = self.session.query(FeatureRequest.ID, FeatureRequest.Title, FeatureRequest.Description,
             FeatureRequest.priority, FeatureRequest.client_id, FeatureRequest.target_date,
-            FeatureRequest.product_area_id, client.firstname, ProductArea.area_name).outerjoin(client).outerjoin(ProductArea)\
+            FeatureRequest.product_area_id, client.firstname, ProductArea.area_name, FeatureRequest.status_id).outerjoin(client).outerjoin(ProductArea)\
             .filter(FeatureRequest.client_id==id).order_by(FeatureRequest.priority.asc())
         return query.all()
 
