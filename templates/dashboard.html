@@ -12,13 +12,7 @@
 <thead>
 <tr><td colspan="3" style="color:blue;">Client's Dashboard</td>
 <td colspan="4" align="right">
-<div class="scrollmenu">
-  <a href="#home">Home</a>
-  <a href="/product_areas">ProductArea</a>
-  <a href="#contact">Contact</a>
-  <a href="#about">About</a>
-  <a href="#support">Support</a>
-</div>
+{% include 'menu.html' %}
 </td>
 </tr>
 <tr><th>Firstname</th><th>Lastname</th><th>Email</th><th>Telephone</th><th>Address</th><th></th><th></th></tr>
@@ -40,7 +34,7 @@
 </table>
 <div class="btn_groups"><div class="btn" id="create_user" data-bind="click:getclient">Create User</div></div>
 
-<div id="client_form" style="display:none;">
+<div id="client_form" data-bind="visible:show_client_form">
     <table style="width: 100%">
     <tr>
          <th><span style="font-size:18px;font-weight:bold" data-bind="text:add_edit_txt"></span></th> 

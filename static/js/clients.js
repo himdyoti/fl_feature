@@ -46,6 +46,7 @@
         self.clients = ko.observableArray();
         self.slctd_client = ko.observable();
         self.add_edit_txt = ko.observable("Add Client");
+        self.show_client_form = ko.observable(false);
 
         $.each(all_clients, function(indx,cl){
             obj = new Client();
@@ -56,28 +57,28 @@
 
         self.getclient = function(client){
             if(client.client_id && client) {
-            $.ajax({
-                url:"/getclient?cid=" + client.client_id() + "&ajxReq=1",
-                type:'get',
-                dataType:'json',
-                success:function(json){
-                    console.log(json);
-                    if(json){
-                        client_db = json[0];
-                        cl_indx = self.clients().indexOf(client);
-                        client = cl_attr_setter(client,client_db);
-                        self.slctd_client(client);
-                        self.add_edit_txt("Edit "+client.firstname()+" "+client.lastname()+"'s Profile");
+                $.ajax({
+                    url:"/getclient?cid=" + client.client_id() + "&ajxReq=1",
+                    type:'get',
+                    dataType:'json',
+                    success:function(json){
+                        console.log(json);
+                        if(json){
+                            client_db = json[0];
+                            cl_indx = self.clients().indexOf(client);
+                            client = cl_attr_setter(client,client_db);
+                            self.slctd_client(client);
+                            self.add_edit_txt("Edit "+client.firstname()+" "+client.lastname()+"'s Profile");
+                        }
+                    },
+                    complete:function(){
+                        self.show_client_form(true);                  
                     }
-                },
-                complete:function(){
-                    $("#client_form").show();                   
-                }
-            });
+                });
             }
             else{
                 self.slctd_client(new Client());
-                $("#client_form").show();                
+                self.show_client_form(true);               
             }
 
         };
@@ -105,8 +106,10 @@
                             client.client_id(json['client_id']);
                             client.url_ftr("/get_feature_request?cid=" + json['client_id']);
                             obj.client_url("/getclient?cid=" + json['client_id']);
-                            self.clients.push(client);
                             alert("client added successfully");
+                            self.show_client_form(false).extend({ rateLimit: 900 });
+                            self.clients.push(client);
+                            
                         }
                     }
                 },

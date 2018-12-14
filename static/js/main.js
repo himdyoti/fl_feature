@@ -60,7 +60,6 @@ var viewModel = function(data, client_id, ftr_status){
         ftr_one.client_id(client_id);
         len1 = self.lines().length ;
         ftr_one.priority(len1 + 1);
-        ftr_one.pa_slct(product_areas);
         self.lines.push(ftr_one);
         self.selectbox.push(len1 + 1);
     };
@@ -77,6 +76,17 @@ var viewModel = function(data, client_id, ftr_status){
             }
             if(ajax_remove_feature(line))
                 self.lines.remove(line);
+        }
+    };
+
+    self.reclaim_priority = function(){
+        // when features  are saved, priority of  closed status sholud get empty
+        // can be implemented in backend or frontend or both 
+        // open features can reclaim priorities of closed features
+        // when closed priorities are again pulled reassign desired priority
+        self.sort1();
+        for(pos=0; pos < self.lines().length ; pos++){
+                self.lines()[pos].priority(pos + 1);
         }
     };
 
@@ -138,6 +148,7 @@ var viewModel = function(data, client_id, ftr_status){
     };
 
 };
+
 
 function validateData(ft_data){
     var is_valid = {'status':true,'mssg':'success', 'ftrObj':{}};
